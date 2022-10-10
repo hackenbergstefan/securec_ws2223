@@ -1,0 +1,51 @@
+#include <stddef.h>
+#include <stdint.h>
+#include <string.h>
+
+#include "hal.h"
+#include "simpleserial.h"
+
+void print_buffer(uint8_t *buffer, size_t length)
+{
+    simpleserial_put(0x01, length, buffer);
+}
+
+uint8_t command(uint8_t cmd, uint8_t scmd, uint8_t len, uint8_t *input)
+{
+
+{% if fromfile %}
+    setup(input);
+{% endif %}
+
+    trigger_high();
+
+{% if fromfile %}
+    run();
+{% else %}
+    {{ code }}
+{% endif %}
+
+    trigger_low();
+
+{% if fromfile %}
+    teardown();
+{% endif %}
+
+    return 0;
+}
+
+int main(void)
+{
+    platform_init();
+    init_uart();
+    trigger_setup();
+
+    simpleserial_init();
+    simpleserial_addcmd(0x01, 0, command);
+    while (1)
+        simpleserial_get();
+}
+
+{% if fromfile %}
+#include "{{ fromfile }}"
+{% endif %}
