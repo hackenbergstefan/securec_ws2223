@@ -79,11 +79,10 @@ def compile_and_flash(path, cryptooptions=None):
 def reset_target():
     scope = config.scope
     target = config.target
-    scope.io.nrst = "low"
-    time.sleep(0.05)
-    target.flush()
-    scope.io.nrst = "high"
-    time.sleep(0.05)
+    scope.io.pdic = False
+    time.sleep(0.2)
+    scope.io.pdic = "high_z"
+    time.sleep(0.2)
     target.flush()
 
 
