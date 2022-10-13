@@ -16,6 +16,13 @@
 1. Download latest version of ChipWhisperer Setup from
    [https://github.com/newaetech/chipwhisperer/releases](https://github.com/newaetech/chipwhisperer/releases).
 2. Install. Recommended Installation folder: `C:\cw`.
+3. Update git repository
+
+   ```batch
+   cd C:\cw\cw\home\portable\chipwhisperer
+   git pull
+   git submodule update jupyter
+   ```
 
 #### Unix like OS
 
