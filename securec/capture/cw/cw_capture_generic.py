@@ -58,17 +58,21 @@ def capture(
     checkoutput=None,
     **kwargs,
 ):
-    # Generate program
-    template = jinja2.Environment().from_string(TEMPLATE)
-    rendered = template.render(
-        dict(number_of_traces=number_of_traces, code=code, fromfile=fromfile)
-    )
-    with open(os.path.join(filedir, "_generic_simpleserial.c"), "w") as fp:
-        fp.write(rendered)
+    if code or fromfile:
+        # Generate program
+        template = jinja2.Environment().from_string(TEMPLATE)
+        rendered = template.render(
+            dict(number_of_traces=number_of_traces, code=code, fromfile=fromfile)
+        )
+        with open(os.path.join(filedir, "_generic_simpleserial.c"), "w") as fp:
+            fp.write(rendered)
 
     # Setup, compile and flash
     scope, _ = cw_helper.init_scope_and_target(platform_=platform.upper())
-    cw_helper.compile_and_flash(os.path.join(filedir, "_generic_simpleserial.c"))
+
+    if code or fromfile:
+        cw_helper.compile_and_flash(os.path.join(filedir, "_generic_simpleserial.c"))
+
     scope.default_setup()
     cw_helper.reset_target()
 
