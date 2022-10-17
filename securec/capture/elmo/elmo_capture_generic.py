@@ -99,7 +99,7 @@ def capture(
         else:
             cwd = filedir
 
-        input_length = len(inputfunction())
+        input_length = len(inputfunction(0))
         if number_of_samples == 0:
             number_of_samples = trace_length(input_length, code, fromfile, cwd=cwd)
 
@@ -119,7 +119,7 @@ def capture(
         )
         with open(os.path.join(cwd, "plaintexts.txt"), "w") as fp:
             for i in range(number_of_traces):
-                data["input"][i, :] = inputfunction()
+                data["input"][i, :] = inputfunction(i)
                 fp.write("".join(f"{x:02x}\n" for x in data["input"][i, :]))
 
         run_elmo(binary=platform, cwd=cwd)
@@ -159,24 +159,3 @@ def capture(
             tempdir.__exit__(None, None, None)
 
     return data
-
-
-def main():
-    capture(
-        "elmo",
-        number_of_traces=1_000,
-        inputfunction=lambda: [random.randint(0, 255) for _ in range(2)],
-        code="""print_buffer(input, 2);""",
-        checkoutput=lambda input: input,
-        tmpdir=True,
-    )
-    capture(
-        "elmo",
-        number_of_traces=1_000,
-        inputfunction=lambda: [random.randint(0, 255) for _ in range(32 + 4 + 3 * 32)],
-        fromfile="../../examples/sbox/sbox.c",
-    )
-
-
-if __name__ == "__main__":
-    main()

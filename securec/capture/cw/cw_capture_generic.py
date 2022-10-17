@@ -30,11 +30,11 @@ def _capture_simpleserial(
         number_of_traces,
         dtype=[
             ("trace", "f8", number_of_samples),
-            ("input", "u1", len(inputfunction())),
+            ("input", "u1", len(inputfunction(0))),
         ],
     )
     for i in tqdm.tqdm(range(number_of_traces)):
-        data["input"][i, :] = inputfunction()
+        data["input"][i, :] = inputfunction(i)
         data["trace"][i, :] = _capture_simpleserial_single(
             bytes(data["input"][i, :]),
             samples=number_of_samples,
