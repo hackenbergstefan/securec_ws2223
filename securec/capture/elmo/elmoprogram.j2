@@ -5,10 +5,10 @@
 
 #define NUMBER_OF_TRACES {{ number_of_traces }}
 
-uint8_t input[{{ input_length }}];
+uint8_t elmo_input[{{ input_length }}];
 
 void setup(uint8_t *input_data);
-void run(void);
+void run(uint8_t *input_data);
 void teardown(void);
 
 void read_input(uint8_t *buffer, size_t length);
@@ -34,17 +34,17 @@ int main(void)
 {
     for (uint_fast32_t i = 0; i < NUMBER_OF_TRACES; i++)
     {
-        memset(input, 0, sizeof(input));
-        read_input(input, sizeof(input));
+        memset(elmo_input, 0, sizeof(elmo_input));
+        read_input(elmo_input, sizeof(elmo_input));
 
 {% if fromfile %}
-        setup(input);
+        setup(elmo_input);
 {% endif %}
 
         starttrigger();
 
 {% if fromfile %}
-        run();
+        run(elmo_input);
 {% else %}
         {{ code }}
 {% endif %}

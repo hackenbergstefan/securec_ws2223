@@ -88,8 +88,6 @@ ELMOASMFUNCTIONS = elmoasmfunctions.o
 # C flags
 
 CFLAGS += -O2 -g
-CFLAGS += -Wextra -Wshadow -Wimplicit-function-declaration
-CFLAGS += -Wredundant-decls -Wno-missing-prototypes -Wstrict-prototypes
 CFLAGS += -fno-common -ffunction-sections -fdata-sections
 
 ###############################################################################

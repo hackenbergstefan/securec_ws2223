@@ -6,16 +6,16 @@ except:
 from .elmo import elmo_capture_generic
 
 
-def capture_generic(name, *args, **kwargs):
-    if name.startswith("cw"):
+def capture(platform, *args, **kwargs):
+    if platform.startswith("cw"):
         return cw_capture_generic.capture(
             *args,
             **kwargs,
-            platform=name,
+            platform=platform,
         )
     else:
         return elmo_capture_generic.capture(
-            name,
+            platform=platform,
             *args,
             **kwargs,
         )
