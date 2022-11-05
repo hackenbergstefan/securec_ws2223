@@ -39,9 +39,7 @@ def _capture_simpleserial(
             ("trace", "f8", number_of_samples),
             ("input", "u1", (len(inputfunction(0)),)),
         ]
-        + [("output", "u1", (len(output),))]
-        if read_output
-        else [],
+        + ([("output", "u1", (len(output),))] if read_output else []),
     )
     for i in tqdm.tqdm(range(number_of_traces)):
         data["input"][i, :] = inputfunction(i)
