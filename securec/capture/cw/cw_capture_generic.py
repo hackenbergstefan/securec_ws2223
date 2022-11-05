@@ -24,14 +24,24 @@ def _capture_simpleserial(
     number_of_traces,
     inputfunction,
     number_of_samples=500,
-    checkoutput=None,
+    read_output=False,
 ):
+    if read_output:
+        _capture_simpleserial_single(
+            data=inputfunction(0),
+            samples=number_of_samples,
+        )
+        output = cw_helper.target.simpleserial_read(0x01)
+
     data = np.zeros(
         number_of_traces,
         dtype=[
             ("trace", "f8", number_of_samples),
-            ("input", "u1", len(inputfunction(0))),
-        ],
+            ("input", "u1", (len(inputfunction(0)),)),
+        ]
+        + [("output", "u1", (len(output),))]
+        if read_output
+        else [],
     )
     for i in tqdm.tqdm(range(number_of_traces)):
         data["input"][i, :] = inputfunction(i)
@@ -39,12 +49,8 @@ def _capture_simpleserial(
             bytes(data["input"][i, :]),
             samples=number_of_samples,
         )
-
-        if checkoutput and i in (0, number_of_traces - 1):
-            actual_output = cw_helper.target.simpleserial_read(0x01)
-            expected_output = checkoutput(data["input"][i])
-            if list(actual_output) != list(expected_output):
-                raise Exception(f"{actual_output} != {expected_output}")
+        if read_output:
+            data["output"][i, :] = cw_helper.target.simpleserial_read(0x01)
     return data
 
 
@@ -55,7 +61,7 @@ def capture(
     fromfile=None,
     number_of_samples=500,
     platform="cwlitearm",
-    checkoutput=None,
+    read_output=False,
     **kwargs,
 ):
     if code or fromfile:
@@ -80,7 +86,7 @@ def capture(
         number_of_traces=number_of_traces,
         inputfunction=inputfunction,
         number_of_samples=number_of_samples,
-        checkoutput=checkoutput,
+        read_output=read_output,
     )
     cw_helper.exit_scope_and_target()
     return data

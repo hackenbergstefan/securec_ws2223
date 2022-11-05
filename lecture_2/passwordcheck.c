@@ -5,11 +5,11 @@ static const uint8_t stored_password[] = "infineon";
 
 void print_buffer(uint8_t *buffer, size_t length);
 
-uint8_t password_correct;
+uint8_t password_wrong;
 
 void setup(uint8_t *input)
 {
-    password_correct = 0;
+    password_wrong = 0;
 }
 
 void run(uint8_t *input)
@@ -18,7 +18,7 @@ void run(uint8_t *input)
     {
         if (stored_password[i] != input[i])
         {
-            password_correct = 1;
+            password_wrong = 1;
             break;
         }
     }
@@ -26,5 +26,5 @@ void run(uint8_t *input)
 
 void teardown()
 {
-    print_buffer(&password_correct, sizeof(password_correct));
+    print_buffer(&password_wrong, sizeof(password_wrong));
 }
