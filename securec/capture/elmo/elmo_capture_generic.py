@@ -106,8 +106,8 @@ def capture(
         data = np.zeros(
             number_of_traces,
             dtype=[
-                ("trace", "f8", number_of_samples),
-                ("input", "u1", input_length),
+                ("trace", "f8", (number_of_samples,)),
+                ("input", "u1", (input_length,)),
             ],
         )
 
