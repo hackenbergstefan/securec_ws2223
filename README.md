@@ -21,7 +21,6 @@
    ```batch
    cd C:\cw\cw\home\portable\chipwhisperer
    git pull
-   git submodule update jupyter
    ```
 
 #### Unix like OS
@@ -90,7 +89,7 @@ Windows:
 
 ```env
 # C:\work\ws2223\securec_ws2223\.env
-PATH=C:\cw\cw\usr\bin;C:\cw\cw\home\portable\armgcc\gcc-arm-none-eabi-10-2020-q4-major\bin;C:\cw\cw\home\portable\avrgcc\avr-gcc-10.1.0-x64-windows\bin
+PATH=C:\cw\cw\usr\bin;C:\cw\cw\home\portable\armgcc\bin;C:\cw\cw\home\portable\avrgcc\bin;$env["PATH"]
 PYTHONPATH=C:\work\ws2223\securec_ws2223
 FIRMWAREPATH=C:\cw\cw\home\portable\chipwhisperer\hardware\victims\firmware
 ```
@@ -99,10 +98,12 @@ Unix like (Assume your username is `stefan`):
 
 ```env
 # /home/stefan/work/ws2223/securec_ws2223/.env
-PATH=/home/stefan/work/chipwhisperer
+PATH=/home/stefan/work/chipwhisperer;$env["PATH"]
 PYTHONPATH=/home/stefan/work/ws2223/securec_ws2223
 FIRMWAREPATH=/home/stefan/work/chipwhisperer/hardware/victims/firmware
 ```
+
+Reload VSCode (`Ctrl+Shift+P -> "Developer: Reload Window"`)
 
 ### Test setup
 
